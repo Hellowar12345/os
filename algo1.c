@@ -12,7 +12,7 @@ void *process_i(void *arg) {
     while(flag[j]);//先等j沒意願（在remainder section）
     //critical section
     printf("Process i in critical section\n");
-    usleep(500000);
+    usleep(500000);//用sleep模擬正在跑這段section的程式
     flag[i]=false;//出來後改成沒意願
     //remainder section
     usleep(500000);
