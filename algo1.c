@@ -13,7 +13,7 @@ void *process_i(void *arg) {
     usleep(500000);//用sleep模擬正在跑這段section的程式
     turn=Pj;//出來後把鑰匙給Pj
     //remainder section
-    usleep(500000)
+    usleep(500000);
   }
 }
 //process j
