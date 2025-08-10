@@ -2,18 +2,18 @@
 #include<stdbool.h>
 #include<pthread.h>
 #include <unistd.h>
-#define i 0
-#define j 1
+#define Pi 0
+#define Pj 1
 bool flag[2]={false,false};//flag[0] for pi, flag[1] for pj
   //process i
 void *process_i(void *arg) {
    while(1){
-    flag[i]=true;//我想進去
+    flag[Pi]=true;//我想進去
     while(flag[j]);//先等j沒意願（在remainder section）
     //critical section
     printf("Process i in critical section\n");
     usleep(500000);//用sleep模擬正在跑這段section的程式
-    flag[i]=false;//出來後改成沒意願
+    flag[Pi]=false;//出來後改成沒意願
     //remainder section
     usleep(500000);
   }
@@ -21,12 +21,12 @@ void *process_i(void *arg) {
 //process j
 void *process_j(void *arg) {
   while(1){
-    flag[j]=true;
-    while(flag[i]);
+    flag[Pj]=true;
+    while(flag[Pi]);
     //critical section
     printf("Process j in critical section\n");
     usleep(500000);
-    flag[j]=false;
+    flag[Pj]=false;
     //remainder section
     usleep(500000);
   }
