@@ -9,7 +9,7 @@ bool flag[2]={false,false};//flag[0] for pi, flag[1] for pj
 void *process_i(void *arg) {
    while(1){
     flag[Pi]=true;//我想進去
-    while(flag[j]);//先等j沒意願（在remainder section）
+    while(flag[Pj]);//先等j沒意願（在remainder section）
     //critical section
     printf("Process i in critical section\n");
     usleep(500000);//用sleep模擬正在跑這段section的程式
