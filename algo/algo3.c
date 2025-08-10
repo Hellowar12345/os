@@ -1,47 +1,43 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <pthread.h>
-
-bool flag[2] = {false, false};
-int turn;
-
+#include<stdio.h>
+#include<stdbool.h>
+#include<pthread.h>
+#include <unistd.h>
+#define Pi 0
+#define Pj 1
+int turn=Pi;
+bool flag[2]={false,false};//flag[0] for Pi, flag[1] for Pj
+  //process i
 void *process_i(void *arg) {
-    int id = 0;
-    int other = 1;
-    while (1) {
-        flag[id] = true;
-        turn = other;
-        while (flag[other] && turn == other);
-        
-        // critical section
-        printf("Process %d in critical section\n", id);
-        
-        flag[id] = false;
-        // remainder section
-    }
+   while(1){
+    flag[Pi]=true;//我想進去
+    while(flag[Pj]&&turn==Pj);//先等j沒意願（在remainder section）
+    //critical section
+    printf("Process i in critical section\n");
+    usleep(500000);//用sleep模擬正在跑這段section的程式
+    turn=Pj;
+    flag[Pi]=false;//出來後改成沒意願
+    //remainder section
+    usleep(500000);
+  }
 }
-
+//process j
 void *process_j(void *arg) {
-    int id = 1;
-    int other = 0;
-    while (1) {
-        flag[id] = true;
-        turn = other;
-        while (flag[other] && turn == other);
-        
-        // critical section
-        printf("Process %d in critical section\n", id);
-        
-        flag[id] = false;
-        // remainder section
-    }
+  while(1){
+    flag[Pj]=true;
+    while(flag[Pi]&&turn==Pi);
+    //critical section
+    printf("Process j in critical section\n");
+    usleep(500000);
+    turn=Pi;
+    flag[Pj]=false;
+    //remainder section
+    usleep(500000);
+  }
 }
-
-int main() {
-    pthread_t t1, t2;
-    pthread_create(&t1, NULL, process_i, NULL);
-    pthread_create(&t2, NULL, process_j, NULL);
-    pthread_join(t1, NULL);
-    pthread_join(t2, NULL);
-    return 0;
+int main(){
+  pthread_t t1,t2;
+  pthread_create(&t1, NULL, process_i, NULL);
+  pthread_create(&t2, NULL, process_j, NULL);
+  pthread_join(t1, NULL);
+  pthread_join(t2, NULL);
 }
